@@ -43,7 +43,7 @@ int main(void) {
 }
 */
 
-/* Prelab - Blinking LED
+// Prelab - Blinking LED
 int main(void) {
 	TCCR1B |= (1<<CS12);
 	TIMSK1 |=(1<<TOIE0);
@@ -58,4 +58,3 @@ ISR(TIMER1_OVF_vect)
 {
 	PORTB =~PORTB;
 }
-*/
