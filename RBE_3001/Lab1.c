@@ -15,13 +15,12 @@ void startADCOutput() {
 }
 
 void setupPWMTiming() {
-	//puts timer two in fast PWM mode
+	//puts timer one in fast PWM mode
 	DDRD |= (1<<PD4); // set PWM pin as output
-	//PORTD = 0xFF;
 	TCCR1A = (1<<COM1B1)|(1<<WGM11)|(1<<WGM10);
 	TCCR1B = (1<<WGM12)|(1<<WGM13)|(1<<CS12)|(1<<CS10);
-	OCR1A = 200;//(0xFFFF)/100;
-	OCR1B = 100;//(0xFFFF)/200;
+	OCR1A = 200; //default values -IDK doesn't matter
+	OCR1B = 100;
 }
 
 void setPWM(unsigned int newFreq,unsigned int dutyCycle) {
