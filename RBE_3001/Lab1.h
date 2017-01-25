@@ -19,6 +19,9 @@ void setPWM(unsigned int newFreq,unsigned int dutyCycle);
 void startGlobalTiming();
 unsigned long getGlobalTime();
 
+void setupSwitches();
+void readSwitches();
+
 void setup();
 void loop();
 

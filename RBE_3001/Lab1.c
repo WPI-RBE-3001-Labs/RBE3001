@@ -24,8 +24,9 @@ void setupPWMTiming() {
 }
 
 void setPWM(unsigned int newFreq,unsigned int dutyCycle) {
+	//Duty cycle 0-100
 	OCR1A = 18000/newFreq;
-	OCR1B = (OCR1A*dutyCycle)/100;
+	OCR1B = (OCR1A/100)*dutyCycle;
 }
 
 void startGlobalTiming() {
@@ -36,16 +37,36 @@ unsigned long getGlobalTime() {
 	return 1;
 }
 
+void setupSwitches() {
+	DDRB = 0x00; //set port B as input
+}
+
+void readSwitches() {
+	if((((~PINB)>>7)&0x01)==0x01)
+	{
+		setPWM(1,50);
+	}
+	else if((((~PINB)>>6)&0x01)==0x01)
+	{
+		setPWM(20,50);
+	}
+	else if((((~PINB)>>5)&0x01)==0x01)
+	{
+		setPWM(100,50);
+	}
+}
+
 void setup() {
 	//setupADCTiming();
 	//startADCOutput();
 	setupPWMTiming();
 	setPWM(150,50);
+	setupSwitches();
 	//startGlobalTiming();
 	//setPWMFrew(140);
 }
 
 void loop() {
 	//TODO: Check for BTN press for ADC start
-	//TODO: check PWM freq BTNS to switch freq; Could do with interrupts but why
+	readSwitches();
 }
