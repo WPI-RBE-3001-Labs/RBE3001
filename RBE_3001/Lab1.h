@@ -16,8 +16,7 @@ void startADCOutput();
 void setupPWMTiming();
 void setPWM(unsigned int newFreq,unsigned int dutyCycle);
 
-void startGlobalTiming();
-unsigned long getGlobalTime();
+void handleADCData();
 
 void setupSwitches();
 void readSwitches();

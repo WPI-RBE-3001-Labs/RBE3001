@@ -19,12 +19,12 @@ void setupADCTiming() {
 	TCCR0A = (1<<WGM01)|(1<<COM0A0);
 	TCCR0B = (1<<CS02)|(1<<CS00);
 	TIMSK0 = 0x2; //OCIEA enable
+
 	//SETUP ADC
 	ADMUX   = (1<<REFS1); //AVcc; Mux pin = ADC0 single pole
 	ADCSRA  = (1<<ADATE)|(1<<ADIE); //Enable auto trigger and interrupt
 	ADCSRA |= (1<<ADPS0)|(1<<ADPS1)|(1<<ADPS2); //Set prescaler to 128 because it's only valid setting for setup
 	ADCSRB  = (1<<ADTS0)|(1<<ADTS1); //set trigger source to timer0 Comp A
-	//TODO: add interrupt ISR to clear flag and store data
 	ADCSRA |= (1<<ADEN)|(1<<ADSC); //Enable ADC
 }
 uint16_t lastADCVal = 0;
@@ -34,8 +34,9 @@ ISR(ADC_vect) { //Triggers on ADC conversion complete
 	lastADCVal = 0;
 	lastADCVal = ADCL;
 	lastADCVal |= (ADCH<<8);
+	newDataToSend = 0x01;
 }
-unsigned long globalCount;
+unsigned long long globalCount;
 ISR(TIMER0_COMPA_vect) {
 	globalCount++;
 }
@@ -59,10 +60,10 @@ void setupSwitches() {
 	DDRB = 0x00; //set port B as input
 }
 unsigned int freq = 10;
+unsigned int dutyCycle = 50;
+unsigned long long lastSendTime = 0;
 void readSwitches() {
-	printf("Test %f",1.25); //example print out
-	_delay_ms(500); //Delay .5 sec
-	unsigned int dutyCycle = (unsigned int)(((unsigned long)lastADCVal*100)/1024);
+	dutyCycle = (unsigned int)(((unsigned long)lastADCVal*100)/1024);
 	if((((~PINB)>>7)&0x01)==0x01)
 	{
 		freq = 1;
@@ -75,6 +76,11 @@ void readSwitches() {
 	{
 		freq = 100;
 	}
+	if(((((~PINB)>>4)&0x01)==0x01)&&(lastSendTime == 0))
+	{
+		lastSendTime = globalCount;
+	}
+
 	setPWM(freq,dutyCycle);
 }
 
@@ -85,12 +91,40 @@ void setup() {
 	setPWM(150,50);
 	setupSwitches();
 	setupADCTiming();
+}
 
-	//startGlobalTiming();
-	//setPWMFrew(140);
+void handleADCData() {
+	if(newDataToSend == 0x01&&(lastSendTime != 0) && (lastSendTime+225 >= globalCount))
+	{
+		//send data
+		unsigned int aVal = lastADCVal;
+		//Timestamp, ADC count, mV, angle deg
+		float tStamp = globalCount/225.0f;
+		float mV = 1000*5*(aVal/1024.0f);
+		float ang = 180*(aVal/1024.0f);
+		printf("%f,%u,%f,%f\n",tStamp,aVal,mV,ang);
+		newDataToSend = 0x00;
+	}
+	if(lastSendTime+225 < globalCount)
+	{
+		lastSendTime = 0;
+	}
+}
+void handlePWMData() {
+	if(newDataToSend == 0x01)
+	{
+		//send data
+		unsigned int aVal = lastADCVal;
+		//Timestamp, ADC count, mV, angle deg
+		float tStamp = globalCount/225.0f;
+		unsigned int state = (PIND>>4);
+		printf("%f,%u,%u,%u,%u\n",tStamp,dutyCycle,freq,state,aVal);
+		newDataToSend = 0x00;
+	}
 }
 
 void loop() {
-	//TODO: Check for BTN press for ADC start
 	readSwitches();
+	handleADCData();
+	//handlePWMData();
 }
