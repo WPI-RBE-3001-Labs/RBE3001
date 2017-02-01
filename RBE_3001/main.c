@@ -5,7 +5,7 @@
  *      Author: vargoal
  */
 #include <RBELib/RBELib.h>
-#include "Lab1.h"
+#include "Lab2A.h"
 
 int main(void) {
 	setup();
