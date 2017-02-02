@@ -15,15 +15,17 @@
  * of your SS lines!
  */
 void initSPI() {
-	//TODO: Disable pins gpio functions
+	//Setup SPI Pins
+	setPinsDir('B',1,3,4,5,7);
+	setPinsDir('B',0,1,6);
+	//Setup SPI
 	SPCR =  (0<<SPIE)| //Interrupt enable bit
 			(1<<SPE) | //SPI enable bit
 			(0<<DORD)| //1-LSB; 0-MSB
 			(1<<MSTR)| //1-master;0-slave
 			(0<<CPOL)| //clk polarity
 			(0<<CPHA)| //clk phase
-			(0<<SPR0)|(0<<SPR0); //div 4 prescaler pg 222
-	//SPSR - Status register
+			(0<<SPR1)|(0<<SPR0); //div 4 prescaler pg 222
 }
 
 /**
@@ -41,6 +43,6 @@ unsigned char spiTransceive(BYTE data) {
 	while((SPSR&(1<<WCOL)) == (1<<WCOL)) {} //wait til collision avoided
 	SPDR = data;
 	while((SPSR&(1<<SPIF)) != (1<<SPIF)) {} //waits til transfer complete
-	return SPDR; //return received data
+	return SPDR; //return received data*/
 }
 
