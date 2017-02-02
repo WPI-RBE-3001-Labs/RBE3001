@@ -17,4 +17,5 @@ int printfRBE(char var, FILE *stream) {
 
 void initRBELib(){
   stdout = &outputFile;
+  debugUSARTInit(115200);
 }
