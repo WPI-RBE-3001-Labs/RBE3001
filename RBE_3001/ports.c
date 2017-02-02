@@ -7,6 +7,9 @@
 #include <RBELib/RBELib.h>
 #include <RBELib/reg_structs.h>
 
+// Port functionality tested
+
+
 /**
  * @brief Sets the direction (Input/Output) of the specified pins.
  *
