@@ -6,7 +6,6 @@
  */
 #include "Lab2A.h"
 
-
 void setup() {
 	//Testing ports setup
 	initRBELib();
@@ -14,7 +13,19 @@ void setup() {
 }
 
 void loop() {
-	//_delay_ms(500);
-	spiTransceive('A');
+	for(int i = 0;i<4095;i++)
+	{
+		setDAC(0,i);
+		setDAC(1,i);
+		setDAC(2,i);
+		setDAC(3,i);
+	}
+	for(int i = 4095;i>0;i--)
+	{
+		setDAC(0,i);
+		setDAC(1,i);
+		setDAC(2,i);
+		setDAC(3,i);
+	}
 }
 

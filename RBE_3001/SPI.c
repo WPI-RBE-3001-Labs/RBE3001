@@ -16,8 +16,8 @@
  */
 void initSPI() {
 	//Setup SPI Pins
-	setPinsDir('B',1,3,4,5,7);
-	setPinsDir('B',0,1,6);
+	setPinsDir('B',OUTPUT,3,4,5,7);
+	setPinsDir('B',INPUT,1,6);
 	//Setup SPI
 	SPCR =  (0<<SPIE)| //Interrupt enable bit
 			(1<<SPE) | //SPI enable bit
