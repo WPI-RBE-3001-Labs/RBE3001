@@ -5,6 +5,7 @@
  *      Author: vargoal
  */
 #include "Lab2A.h"
+#include "Pinout.h"
 
 void setup() {
 	//Testing ports setup
@@ -14,8 +15,13 @@ void setup() {
 }
 
 void loop() {
-	unsigned int val =getADC(4);
-	printf("%i\n",val);
-	_delay_ms(250); //Delay .25 sec
+	unsigned int val =getADC(M0_POT_PIN);
+	unsigned int valTwo =getADC(M1_POT_PIN);
+	int angleOne = potAngle(M0_POT_PIN);
+	int angleTwo = potAngle(M1_POT_PIN);
+	int mVOne = potVolts(M0_POT_PIN);
+	int mVTwo = potVolts(M1_POT_PIN);
+	printf("%i,%i,%i,%i,%i,%i\n",val,valTwo,angleOne,angleTwo,mVOne,mVTwo);
+	_delay_ms(75);
 }
 

@@ -6,16 +6,6 @@
  */
 #include <RBELib/RBELib.h>
 
-#define ADC_PORT 		'a'
-#define M0_CURRENT_PIN	 0
-#define M1_CURRENT_PIN   1
-#define M0_POT_PIN 		 2
-#define M1_POT_PIN 		 3
-#define ANALOG_4_PIN 	 4
-#define ANALOG_5_PIN 	 5
-#define ANALOG_6_PIN 	 6
-#define ANALOG_7_PIN 	 7
-
 /**
  * @brief Initializes the ADC and make one channel active.
  * You can choose to use either interrupts or polling to read
@@ -63,8 +53,8 @@ void clearADC(int channel) {
 unsigned short getADC(int channel) {
 	changeADC(channel);
 	ADCSRA |= (1<<ADSC);
-	while((ADCSRA&ADIF)==0) {} //wait for conversion to end
-	ADCSRA |= (1<<ADIF);
+	while((ADCSRA&(1<<ADIF))==0) {} //wait for conversion to end
+	ADCSRA |= (0<<ADIF);
 	return ADC;
 }
 
@@ -79,6 +69,6 @@ void changeADC(int channel) {
 	unsigned int val = (unsigned int) channel;
 	if(val>7)
 		printf("ADC Channel Error");
-	ADMUX |= val;
+	ADMUX = (1<<REFS1)|(BYTE)val;
 }
 
