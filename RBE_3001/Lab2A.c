@@ -10,22 +10,12 @@ void setup() {
 	//Testing ports setup
 	initRBELib();
 	initSPI(); //Initalizes SPI bus
+	initADC(4);
 }
 
 void loop() {
-	for(int i = 0;i<4095;i++)
-	{
-		setDAC(0,i);
-		setDAC(1,i);
-		setDAC(2,i);
-		setDAC(3,i);
-	}
-	for(int i = 4095;i>0;i--)
-	{
-		setDAC(0,i);
-		setDAC(1,i);
-		setDAC(2,i);
-		setDAC(3,i);
-	}
+	unsigned int val =getADC(4);
+	printf("%i\n",val);
+	_delay_ms(250); //Delay .25 sec
 }
 
