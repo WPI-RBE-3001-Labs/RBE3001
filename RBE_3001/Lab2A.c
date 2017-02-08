@@ -14,19 +14,21 @@ void setup() {
 	initADC(4);
 	initGlobalTimer();
 	initMotorControl();
+	setAngles(45,-45);
 }
 
 void loop() {
-	long time = getGlobalTime();
-	unsigned int val =getADC(M0_POT_PIN);
-	unsigned int valTwo =getADC(M1_POT_PIN);
+	/*long time = getGlobalTime();
+	unsigned int val = getADC(M0_POT_PIN);
+	unsigned int valTwo = getADC(M1_POT_PIN);
 	int angleOne = potAngle(M0_POT_PIN);
 	int angleTwo = potAngle(M1_POT_PIN);
 	int mVOne = potVolts(M0_POT_PIN);
 	int mVTwo = potVolts(M1_POT_PIN);
 	printf("%f,%i,%i,%i,%i,%i,%i\n",(float)time,val,valTwo,angleOne,angleTwo,mVOne,mVTwo);
-	setMotorPwr(0,-30*(4096/100));
+	setMotorPwr(0,30*(4096/100));
 	setMotorPwr(1,30*(4096/100));
-	_delay_ms(75);
+	_delay_ms(75);*/
+
 }
 

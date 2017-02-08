@@ -11,7 +11,7 @@
 void setMotorPwr(unsigned int mtr, int pwr); //+- 4096
 void initMotorControl();
 
-
+void setAngles(int angZero,int AngOne);
 
 
 #endif /* MOTORCONT_H_ */
