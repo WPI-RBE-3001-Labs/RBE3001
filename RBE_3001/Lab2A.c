@@ -11,9 +11,9 @@
 void setup() {
 	//Testing ports setup
 	initRBELib();
-	initSPI(); //Initalizes SPI bus
 	initADC(4);
 	initGlobalTimer();
+	initMotorControl();
 }
 
 void loop() {
@@ -24,7 +24,9 @@ void loop() {
 	int angleTwo = potAngle(M1_POT_PIN);
 	int mVOne = potVolts(M0_POT_PIN);
 	int mVTwo = potVolts(M1_POT_PIN);
-	printf("%i,%i,%i,%i,%i,%i,%i\n",time,val,valTwo,angleOne,angleTwo,mVOne,mVTwo);
+	printf("%f,%i,%i,%i,%i,%i,%i\n",(float)time,val,valTwo,angleOne,angleTwo,mVOne,mVTwo);
+	setMotorPwr(0,-30*(4096/100));
+	setMotorPwr(1,30*(4096/100));
 	_delay_ms(75);
 }
 
