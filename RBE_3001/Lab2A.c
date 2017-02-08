@@ -7,7 +7,7 @@
 #include "Lab2A.h"
 #include "Pinout.h"
 #include "GlobalTiming.h"
-
+#include "MotorCont.h"
 void setup() {
 	//Testing ports setup
 	initRBELib();
