@@ -144,16 +144,16 @@ float lastErrorM1 = 0;
 float sumErrorM0 = 0;
 float sumErrorM1 = 0;
 float M0_kp = 120;
-float M0_ki = 4;
+float M0_ki = 0;
 float M0_kd = 0;
 float M1_kp = 120;
-float M1_ki = 4;
+float M1_ki = 0;
 float M1_kd = 0;
 
 
 ISR(TIMER2_COMPA_vect) {
 	//called at 100 hz
-	updatePIDConsts();
+	//updatePIDConsts();
 	/*printf("\n");
 	printf("P: %f\n",M0_kp);
 	printf("i: %f\n",M0_ki);
@@ -179,6 +179,7 @@ ISR(TIMER2_COMPA_vect) {
 	//printf("%f,%i,%i,%f,%f,%f,%f,%i,%i\n",(float)getGlobalTime(),m0_target,m1_target,pidOutM0,pidOutM1,errorM0,errorM1,getMotorCurrent(0),getMotorCurrent(1));
 	//printf("%i,%i\n",m0_target,m1_target);
 	//printf("%i,%i\n",angleM0,angleM1);
+	printf("%f,%i,%i\n",(float)getGlobalTime(),angleM0,angleM1);
 }
 
 const float LINK_LENGTH_ZERO = 6*25.4; //mm

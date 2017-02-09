@@ -32,11 +32,11 @@ void setup() {
 	setAngles(30,-30);
 	setPinsDir('C',INPUT,4,4,5,6,7);
 	setPinsVal('C',HIGH,4,4,5,6,7);
-	ArmPose pose = getPoseFromXY(7.5*25.4,6*25.4);
-	setAngles(pose.thetaZero,pose.thetaOne);
-	printf("%i,%i\n",pose.thetaZero,pose.thetaOne);
-	_delay_ms(3000);
-	printf("Start\n");
+	//ArmPose pose = getPoseFromXY(7.5*25.4,6*25.4);
+	//setAngles(pose.thetaZero,pose.thetaOne);
+	//printf("%i,%i\n",pose.thetaZero,pose.thetaOne);
+	//_delay_ms(3000);
+	//printf("Start\n");
 	/*for(int i = 0;i<3;i++)
 	{
 		ArmPose pose = getPoseFromXY(targets[i].x,targets[i].y);
@@ -69,17 +69,17 @@ void loop() {
 	}
 	else if(((PINC>>5)&0x1)==0x00)
 	{
-		setAngles(0,-30);
+		setAngles(30,0);
 		//printf("3\n");
 	}
 	else if(((PINC>>6)&0x1)==0x00)
 	{
-		setAngles(0,-60);
+		setAngles(60,0);
 		//printf("6\n");
 	}
 	else if(((PINC>>7)&0x1)==0x00)
 	{
-		setAngles(0,-89);
+		setAngles(90,0);
 		//printf("9\n");
 	}
 	//_delay_ms(25);
