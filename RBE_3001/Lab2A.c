@@ -53,10 +53,12 @@ void loop() {
 	//printf("%x\t",PINC);
 	if(((PINC>>4)&0x01)==0x00)
 	{
+		ArmPose pose = getPoseFromXY(8*25.4,4*25.4);
+		setAngles(pose.thetaZero,pose.thetaOne);
 		//printf("Btn press");
 		//_delay_ms(50);
 		//setAngles(0,0);
-		for(int i = 0;i<4;i++)
+		/*for(int i = 0;i<4;i++)
 		{
 			goToXYWithLine(targets[i].x,targets[i].y);
 			//while(atAngle() != 0x1) {_delay_ms(20);} //wait till at angle
@@ -64,22 +66,29 @@ void loop() {
 			//_delay_ms(1000);
 		}
 		printf("Seq Done\n");
-		_delay_ms(1000);
+		_delay_ms(1000);*/
+
 		//printf("0\n");
 	}
 	else if(((PINC>>5)&0x1)==0x00)
 	{
-		setAngles(30,0);
+		ArmPose pose = getPoseFromXY(8*25.4,0*25.4);
+		setAngles(pose.thetaZero,pose.thetaOne);
+		//setAngles(30,0);
 		//printf("3\n");
 	}
 	else if(((PINC>>6)&0x1)==0x00)
 	{
-		setAngles(60,0);
+		ArmPose pose = getPoseFromXY(10*25.4,0*25.4);
+		setAngles(pose.thetaZero,pose.thetaOne);
+		//setAngles(60,0);
 		//printf("6\n");
 	}
 	else if(((PINC>>7)&0x1)==0x00)
 	{
-		setAngles(90,0);
+		ArmPose pose = getPoseFromXY(10*25.4,4*25.4);
+		setAngles(pose.thetaZero,pose.thetaOne);
+		//setAngles(90,0);
 		//printf("9\n");
 	}
 	//_delay_ms(25);
