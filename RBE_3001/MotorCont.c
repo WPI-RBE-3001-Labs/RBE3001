@@ -108,11 +108,11 @@ char atAngle() {
 	int diffZero = actZero-m0_target;
 	int diffOne = actOne-m1_target;
 	//printf("%i,%i\n",diffZero,diffOne);
-	if((diffZero >25) || (diffZero<-25))
+	if((diffZero >5) || (diffZero<-5))
 	{
 		return 0x0;
 	}
-	if((diffOne >25) || (diffOne<-25))
+	if((diffOne >5) || (diffOne<-5))
 	{
 		return 0x0;
 	}
@@ -143,19 +143,21 @@ float lastErrorM0 = 0;
 float lastErrorM1 = 0;
 float sumErrorM0 = 0;
 float sumErrorM1 = 0;
-float KP_MAX = 4;
-float KI_MAX = 0;
-float KD_MAX = 0;
-float M0_kp = 90;
-float M0_ki = 1;
+float M0_kp = 120;
+float M0_ki = 4;
 float M0_kd = 0;
-float M1_kp = 90;
-float M1_ki = 1;
+float M1_kp = 120;
+float M1_ki = 4;
 float M1_kd = 0;
 
 
 ISR(TIMER2_COMPA_vect) {
 	//called at 100 hz
+	updatePIDConsts();
+	/*printf("\n");
+	printf("P: %f\n",M0_kp);
+	printf("i: %f\n",M0_ki);
+	printf("d: %f\n",M0_kd);*/
 	int angleM0 = potAngle(M0_POT_PIN);
 	int angleM1 = potAngle(M1_POT_PIN);
 	float M0_ff = sin(angleM0*DEG_TO_RAD)*M0_GRAV_CONST;
@@ -208,28 +210,50 @@ void goToXYWithLine(float x,float y) {
 	float thetaTwo = potAngle(M1_POT_PIN);
 	thetaOne = thetaOne*(PI/180.0f);
 	thetaTwo = thetaTwo*(PI/180.0f);
-	float yInit = (LINK_LENGTH_ZERO*sin(thetaOne))+(LINK_LENGTH_ONE*sin(thetaOne-thetaTwo));
-	float xInit = (LINK_LENGTH_ZERO*cos(thetaOne))+(LINK_LENGTH_ONE*cos(thetaOne-thetaTwo));
+	float yInit = (LINK_LENGTH_ZERO*sin(thetaOne))+(LINK_LENGTH_ONE*sin(thetaOne+thetaTwo));
+	float xInit = (LINK_LENGTH_ZERO*cos(thetaOne))+(LINK_LENGTH_ONE*cos(thetaOne+thetaTwo));
 	float diffX = x-xInit;
 	float diffY = y-yInit;
 	float length = sqrt((diffX*diffX)+(diffY*diffY));
-	int numberOfPoints = length/10;
+	int numberOfPoints = length/5;
+	printf("xInit: %f\n",xInit);
+	printf("yInit: %f\n",yInit);
+	printf("diffX: %f\n",diffX);
+	printf("diffY: %f\n",diffY);
+	printf("Num Points: %i\n",numberOfPoints);
+	_delay_ms(25);
 	float deltaX = (x-xInit)/(float)numberOfPoints;
 	float deltaY = (y-yInit)/(float)numberOfPoints;
 	for(int i = 0; i<numberOfPoints;i++)
 	{
 		float xNew = xInit +(deltaX*(i+1));
 		float yNew = yInit +(deltaY*(i+1));
+		printf("%f,%f\n",xNew,yNew);
+		_delay_ms(5);
 		ArmPose pose = getPoseFromXY(xNew,yNew);
 		setAngles(pose.thetaZero,pose.thetaOne);
+		printf("%i,%i\n",pose.thetaZero,pose.thetaOne);
 		while(atAngle() != 0x1) {
-			printf("w\n");
-			_delay_ms(5);
+			//printf("w\n");
+			printf("    %i,%i\n",potAngle(M0_POT_PIN),potAngle(M1_POT_PIN));
+			_delay_ms(2);
+			//_delay_ms(5);
 		} //wait till at angle
-		printf("d\n");
-		_delay_ms(5);
+		//printf("d\n");
+		//_delay_ms(5);
 		//_delay_ms(5);
 	}
 	_delay_ms(500);
 }
 
+void updatePIDConsts() {
+	float kp = ((getADC(ANALOG_4_PIN))/1023.0)*500;
+	float ki = ((getADC(ANALOG_5_PIN))/1023.0)*10;
+	float kd = ((getADC(ANALOG_6_PIN))/1023.0)*50;
+	M0_kp = kp;
+	M0_ki = ki;
+	M0_kd = kd;
+	M1_kp = kp;
+	M1_ki = ki;
+	M1_kd = kd;
+}

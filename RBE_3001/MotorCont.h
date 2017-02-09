@@ -27,4 +27,7 @@ typedef struct {
 
 void goToXYWithLine(float x,float y);
 
+void updatePIDConsts();
+
+
 #endif /* MOTORCONT_H_ */
