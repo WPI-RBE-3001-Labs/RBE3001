@@ -181,8 +181,8 @@ ISR(TIMER2_COMPA_vect) {
 	//printf("%i,%i\n",angleM0,angleM1);
 }
 
-const float LINK_LENGTH_ZERO = 152.4; //mm
-const float LINK_LENGTH_ONE = 152.4; //mm
+const float LINK_LENGTH_ZERO = 6*25.4; //mm
+const float LINK_LENGTH_ONE = 5*25.4; //mm
 const float PI = 3.141592654;
 ArmPose getPoseFromXY(float x,float y) {
 	float L3 = sqrt((x*x)+(y*y));
@@ -197,7 +197,6 @@ ArmPose getPoseFromXY(float x,float y) {
 	ArmPose result;
 	target_one = (int)(target_one*(180/PI));
 	target_two = (int)(target_two*(180/PI));
-
 	result.thetaZero = target_one;
 	result.thetaOne = target_two;
 	//printf("%i\n",result.thetaZero);//result.thetaZero);
@@ -215,7 +214,7 @@ void goToXYWithLine(float x,float y) {
 	float diffX = x-xInit;
 	float diffY = y-yInit;
 	float length = sqrt((diffX*diffX)+(diffY*diffY));
-	int numberOfPoints = length/5;
+	int numberOfPoints = length/2;
 	printf("xInit: %f\n",xInit);
 	printf("yInit: %f\n",yInit);
 	printf("diffX: %f\n",diffX);
@@ -233,12 +232,13 @@ void goToXYWithLine(float x,float y) {
 		ArmPose pose = getPoseFromXY(xNew,yNew);
 		setAngles(pose.thetaZero,pose.thetaOne);
 		printf("%i,%i\n",pose.thetaZero,pose.thetaOne);
-		while(atAngle() != 0x1) {
+		//while(atAngle() != 0x1) {
 			//printf("w\n");
-			printf("    %i,%i\n",potAngle(M0_POT_PIN),potAngle(M1_POT_PIN));
-			_delay_ms(2);
+			//printf("    %i,%i\n",potAngle(M0_POT_PIN),potAngle(M1_POT_PIN));
+			//_delay_ms(2);
 			//_delay_ms(5);
-		} //wait till at angle
+		//} //wait till at angle
+		_delay_ms(2);
 		//printf("d\n");
 		//_delay_ms(5);
 		//_delay_ms(5);

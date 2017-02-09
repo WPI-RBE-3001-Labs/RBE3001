@@ -15,14 +15,14 @@ XYTarget targets[4];
 
 void setup() {
 	//setup targets
-	targets[0].x = 7.5*25.4;
-	targets[0].y = 6*25.4;
-	targets[1].x = 7.5*25.4;
-	targets[1].y = 8*25.4;
-	targets[2].x = 5.5*25.4;
-	targets[2].y = 7*25.4;
-	targets[3].x = 7.5*25.4;
-	targets[3].y = 6*25.4;
+	targets[0].x = 8.5*25.4;
+	targets[0].y = 5*25.4;
+	targets[1].x = 10.5*25.4;
+	targets[1].y = 0*25.4;
+	targets[2].x = 8.5*25.4;
+	targets[2].y = 0*25.4;
+	targets[3].x = 8.5*25.4;
+	targets[3].y = 5*25.4;
 
 	//init everything
 	initRBELib();
