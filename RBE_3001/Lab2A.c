@@ -11,7 +11,7 @@
 #include <RBELib/RBELib.h>
 #include <RBELib/reg_structs.h>
 
-XYTarget targets[3];
+XYTarget targets[4];
 
 void setup() {
 	//setup targets
@@ -53,16 +53,17 @@ void loop() {
 	//printf("%x\t",PINC);
 	if(((PINC>>4)&0x01)==0x00)
 	{
-		printf("Btn press");
-		_delay_ms(50);
+		//printf("Btn press");
+		//_delay_ms(50);
 		//setAngles(0,0);
 		for(int i = 0;i<4;i++)
 		{
 			ArmPose pose = getPoseFromXY(targets[i].x,targets[i].y);
 			setAngles(pose.thetaZero,pose.thetaOne);
-			while(atAngle() != 0x1) {_delay_ms(50);} //wait till at angle
+			while(atAngle() != 0x1) {_delay_ms(20);} //wait till at angle
 			printf("Done\n");
 			_delay_ms(1000);
+			_delay_ms(25);
 		}
 		printf("Seq Done\n");
 		_delay_ms(1000);
@@ -70,17 +71,17 @@ void loop() {
 	}
 	else if(((PINC>>5)&0x1)==0x00)
 	{
-		setAngles(30,0);
+		setAngles(0,-30);
 		//printf("3\n");
 	}
 	else if(((PINC>>6)&0x1)==0x00)
 	{
-		setAngles(60,0);
+		setAngles(0,-60);
 		//printf("6\n");
 	}
 	else if(((PINC>>7)&0x1)==0x00)
 	{
-		setAngles(90,0);
+		setAngles(0,-89);
 		//printf("9\n");
 	}
 	//_delay_ms(25);

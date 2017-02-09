@@ -108,11 +108,11 @@ char atAngle() {
 	int diffZero = actZero-m0_target;
 	int diffOne = actOne-m1_target;
 	printf("%i,%i\n",diffZero,diffOne);
-	if((diffZero >5) || (diffZero<-5))
+	if((diffZero >25) || (diffZero<-25))
 	{
 		return 0x0;
 	}
-	if((diffOne >5) || (diffOne<-5))
+	if((diffOne >25) || (diffOne<-25))
 	{
 		return 0x0;
 	}
@@ -146,12 +146,12 @@ float sumErrorM1 = 0;
 float KP_MAX = 4;
 float KI_MAX = 0;
 float KD_MAX = 0;
-float M0_kp = 100;
-float M0_ki = 5;
-float M0_kd = 5;
-float M1_kp = 100;
-float M1_ki = 5;
-float M1_kd = 5;
+float M0_kp = 90;
+float M0_ki = 1;
+float M0_kd = 0;
+float M1_kp = 90;
+float M1_ki = 1;
+float M1_kd = 0;
 
 
 ISR(TIMER2_COMPA_vect) {
