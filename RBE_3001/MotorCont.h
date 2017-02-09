@@ -25,4 +25,6 @@ typedef struct {
 	float y; //mm
 } XYTarget;
 
+void goToXYWithLine(float x,float y);
+
 #endif /* MOTORCONT_H_ */

@@ -107,7 +107,7 @@ char atAngle() {
 	int actOne = potAngle(M1_POT_PIN);
 	int diffZero = actZero-m0_target;
 	int diffOne = actOne-m1_target;
-	printf("%i,%i\n",diffZero,diffOne);
+	//printf("%i,%i\n",diffZero,diffOne);
 	if((diffZero >25) || (diffZero<-25))
 	{
 		return 0x0;
@@ -184,24 +184,52 @@ const float LINK_LENGTH_ONE = 152.4; //mm
 const float PI = 3.141592654;
 ArmPose getPoseFromXY(float x,float y) {
 	float L3 = sqrt((x*x)+(y*y));
-	printf("%f\n",L3);
+	//printf("%f\n",L3);
 	float theta_three = acos(((LINK_LENGTH_ZERO*LINK_LENGTH_ZERO)+(LINK_LENGTH_ONE*LINK_LENGTH_ONE)-(L3*L3))/(2*LINK_LENGTH_ZERO*LINK_LENGTH_ONE));
-	printf("%f\n",theta_three);
+	//printf("%f\n",theta_three);
 	float theta_two = sin(theta_three)*(LINK_LENGTH_ONE/L3);
-	printf("%f\n",theta_two);
-	float theta_four = sin(theta_three)*(LINK_LENGTH_ONE/L3);
-	printf("%f\n",theta_four);
 	float target_one = theta_two+atan(y/x);
-	printf("%f\n",target_one);
+	//printf("%f\n",target_one);
 	float target_two = (PI-theta_three)*-1;
-	printf("%f\n",target_two);
+	//printf("%f\n",target_two);
 	ArmPose result;
 	target_one = (int)(target_one*(180/PI));
 	target_two = (int)(target_two*(180/PI));
 
 	result.thetaZero = target_one;
 	result.thetaOne = target_two;
-	printf("%i\n",result.thetaZero);//result.thetaZero);
-	printf("%i\n",result.thetaOne);
+	//printf("%i\n",result.thetaZero);//result.thetaZero);
+	//printf("%i\n",result.thetaOne);
 	return result;
 }
+
+void goToXYWithLine(float x,float y) {
+	float thetaOne = potAngle(M0_POT_PIN);
+	float thetaTwo = potAngle(M1_POT_PIN);
+	thetaOne = thetaOne*(PI/180.0f);
+	thetaTwo = thetaTwo*(PI/180.0f);
+	float yInit = (LINK_LENGTH_ZERO*sin(thetaOne))+(LINK_LENGTH_ONE*sin(thetaOne-thetaTwo));
+	float xInit = (LINK_LENGTH_ZERO*cos(thetaOne))+(LINK_LENGTH_ONE*cos(thetaOne-thetaTwo));
+	float diffX = x-xInit;
+	float diffY = y-yInit;
+	float length = sqrt((diffX*diffX)+(diffY*diffY));
+	int numberOfPoints = length/10;
+	float deltaX = (x-xInit)/(float)numberOfPoints;
+	float deltaY = (y-yInit)/(float)numberOfPoints;
+	for(int i = 0; i<numberOfPoints;i++)
+	{
+		float xNew = xInit +(deltaX*(i+1));
+		float yNew = yInit +(deltaY*(i+1));
+		ArmPose pose = getPoseFromXY(xNew,yNew);
+		setAngles(pose.thetaZero,pose.thetaOne);
+		while(atAngle() != 0x1) {
+			printf("w\n");
+			_delay_ms(5);
+		} //wait till at angle
+		printf("d\n");
+		_delay_ms(5);
+		//_delay_ms(5);
+	}
+	_delay_ms(500);
+}
+

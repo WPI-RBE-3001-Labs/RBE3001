@@ -58,12 +58,10 @@ void loop() {
 		//setAngles(0,0);
 		for(int i = 0;i<4;i++)
 		{
-			ArmPose pose = getPoseFromXY(targets[i].x,targets[i].y);
-			setAngles(pose.thetaZero,pose.thetaOne);
-			while(atAngle() != 0x1) {_delay_ms(20);} //wait till at angle
+			goToXYWithLine(targets[i].x,targets[i].y);
+			//while(atAngle() != 0x1) {_delay_ms(20);} //wait till at angle
 			printf("Done\n");
 			_delay_ms(1000);
-			_delay_ms(25);
 		}
 		printf("Seq Done\n");
 		_delay_ms(1000);
