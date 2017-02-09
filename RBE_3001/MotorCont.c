@@ -102,6 +102,24 @@ void setAngles(int angZero,int angOne) {
 	}
 }
 
+char atAngle() {
+	int actZero = potAngle(M0_POT_PIN);
+	int actOne = potAngle(M1_POT_PIN);
+	int diffZero = actZero-m0_target;
+	int diffOne = actOne-m1_target;
+	printf("%i,%i\n",diffZero,diffOne);
+	if((diffZero >5) || (diffZero<-5))
+	{
+		return 0x0;
+	}
+	if((diffOne >5) || (diffOne<-5))
+	{
+		return 0x0;
+	}
+	return 0x1;
+
+	//return ((abs(potAngle(M0_POT_PIN)-m0_target) < 3)&&(abs(potAngle(M1_POT_PIN)-m1_target) < 3));
+}
 int getMotorCurrent(int mtr) { //return mA
 	switch(mtr)
 	{
@@ -128,12 +146,12 @@ float sumErrorM1 = 0;
 float KP_MAX = 4;
 float KI_MAX = 0;
 float KD_MAX = 0;
-float M0_kp = 50;
-float M0_ki = 0;
-float M0_kd = 0;
-float M1_kp = 50;
-float M1_ki = 0;
-float M1_kd = 0;
+float M0_kp = 100;
+float M0_ki = 5;
+float M0_kd = 5;
+float M1_kp = 100;
+float M1_ki = 5;
+float M1_kd = 5;
 
 
 ISR(TIMER2_COMPA_vect) {
@@ -156,7 +174,34 @@ ISR(TIMER2_COMPA_vect) {
 	pidOutM1 = constrain(pidOutM1,-4095,4095);
 	setMotorPwr(0,pidOutM0);
 	setMotorPwr(1,pidOutM1);
-	printf("%f,%i,%i,%f,%f,%f,%f,%i,%i\n",(float)getGlobalTime(),m0_target,m1_target,pidOutM0,pidOutM1,errorM0,errorM1,getMotorCurrent(0),getMotorCurrent(1));
+	//printf("%f,%i,%i,%f,%f,%f,%f,%i,%i\n",(float)getGlobalTime(),m0_target,m1_target,pidOutM0,pidOutM1,errorM0,errorM1,getMotorCurrent(0),getMotorCurrent(1));
 	//printf("%i,%i\n",m0_target,m1_target);
 	//printf("%i,%i\n",angleM0,angleM1);
+}
+
+const float LINK_LENGTH_ZERO = 152.4; //mm
+const float LINK_LENGTH_ONE = 152.4; //mm
+const float PI = 3.141592654;
+ArmPose getPoseFromXY(float x,float y) {
+	float L3 = sqrt((x*x)+(y*y));
+	printf("%f\n",L3);
+	float theta_three = acos(((LINK_LENGTH_ZERO*LINK_LENGTH_ZERO)+(LINK_LENGTH_ONE*LINK_LENGTH_ONE)-(L3*L3))/(2*LINK_LENGTH_ZERO*LINK_LENGTH_ONE));
+	printf("%f\n",theta_three);
+	float theta_two = sin(theta_three)*(LINK_LENGTH_ONE/L3);
+	printf("%f\n",theta_two);
+	float theta_four = sin(theta_three)*(LINK_LENGTH_ONE/L3);
+	printf("%f\n",theta_four);
+	float target_one = theta_two+atan(y/x);
+	printf("%f\n",target_one);
+	float target_two = (PI-theta_three)*-1;
+	printf("%f\n",target_two);
+	ArmPose result;
+	target_one = (int)(target_one*(180/PI));
+	target_two = (int)(target_two*(180/PI));
+
+	result.thetaZero = target_one;
+	result.thetaOne = target_two;
+	printf("%i\n",result.thetaZero);//result.thetaZero);
+	printf("%i\n",result.thetaOne);
+	return result;
 }

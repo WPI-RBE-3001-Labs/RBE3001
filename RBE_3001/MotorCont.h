@@ -13,5 +13,16 @@ void initMotorControl();
 
 void setAngles(int angZero,int AngOne);
 
+typedef struct {
+	int thetaZero;
+	int thetaOne;
+} ArmPose;
+char atAngle();
+ArmPose getPoseFromXY(float x,float y); //in mm
+
+typedef struct {
+	float x; //mm
+	float y; //mm
+} XYTarget;
 
 #endif /* MOTORCONT_H_ */
