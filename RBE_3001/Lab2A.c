@@ -32,6 +32,8 @@ void setup() {
 	setAngles(30,-30);
 	setPinsDir('C',INPUT,4,4,5,6,7);
 	setPinsVal('C',HIGH,4,4,5,6,7);
+	encInit(0);
+	encInit(1);
 	//ArmPose pose = getPoseFromXY(7.5*25.4,6*25.4);
 	//setAngles(pose.thetaZero,pose.thetaOne);
 	//printf("%i,%i\n",pose.thetaZero,pose.thetaOne);
@@ -76,6 +78,7 @@ void loop() {
 		setAngles(pose.thetaZero,pose.thetaOne);
 		//setAngles(30,0);
 		//printf("3\n");
+
 	}
 	else if(((PINC>>6)&0x1)==0x00)
 	{
@@ -103,6 +106,7 @@ void loop() {
 	setMotorPwr(0,30*(4096/100));
 	setMotorPwr(1,30*(4096/100));
 	_delay_ms(75);*/
-
+	printf("%f\n",(float)encCount(0));
+	_delay_ms(100);
 }
 

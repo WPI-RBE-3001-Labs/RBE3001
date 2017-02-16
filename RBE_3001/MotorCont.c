@@ -179,7 +179,7 @@ ISR(TIMER2_COMPA_vect) {
 	//printf("%f,%i,%i,%f,%f,%f,%f,%i,%i\n",(float)getGlobalTime(),m0_target,m1_target,pidOutM0,pidOutM1,errorM0,errorM1,getMotorCurrent(0),getMotorCurrent(1));
 	//printf("%i,%i\n",m0_target,m1_target);
 	//printf("%i,%i\n",angleM0,angleM1);
-	printf("%f,%i,%i\n",(float)getGlobalTime(),angleM0,angleM1);
+	//printf("%f,%i,%i\n",(float)getGlobalTime(),angleM0,angleM1);
 }
 
 const float LINK_LENGTH_ZERO = 6*25.4; //mm
@@ -216,11 +216,11 @@ void goToXYWithLine(float x,float y) {
 	float diffY = y-yInit;
 	float length = sqrt((diffX*diffX)+(diffY*diffY));
 	int numberOfPoints = length/2;
-	printf("xInit: %f\n",xInit);
-	printf("yInit: %f\n",yInit);
-	printf("diffX: %f\n",diffX);
-	printf("diffY: %f\n",diffY);
-	printf("Num Points: %i\n",numberOfPoints);
+	//printf("xInit: %f\n",xInit);
+	//printf("yInit: %f\n",yInit);
+	//printf("diffX: %f\n",diffX);
+	//printf("diffY: %f\n",diffY);
+	//printf("Num Points: %i\n",numberOfPoints);
 	_delay_ms(25);
 	float deltaX = (x-xInit)/(float)numberOfPoints;
 	float deltaY = (y-yInit)/(float)numberOfPoints;
@@ -228,11 +228,11 @@ void goToXYWithLine(float x,float y) {
 	{
 		float xNew = xInit +(deltaX*(i+1));
 		float yNew = yInit +(deltaY*(i+1));
-		printf("%f,%f\n",xNew,yNew);
+		//printf("%f,%f\n",xNew,yNew);
 		_delay_ms(5);
 		ArmPose pose = getPoseFromXY(xNew,yNew);
 		setAngles(pose.thetaZero,pose.thetaOne);
-		printf("%i,%i\n",pose.thetaZero,pose.thetaOne);
+		//printf("%i,%i\n",pose.thetaZero,pose.thetaOne);
 		//while(atAngle() != 0x1) {
 			//printf("w\n");
 			//printf("    %i,%i\n",potAngle(M0_POT_PIN),potAngle(M1_POT_PIN));
