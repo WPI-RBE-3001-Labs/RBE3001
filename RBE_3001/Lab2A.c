@@ -32,8 +32,11 @@ void setup() {
 	//setAngles(30,-30);
 	setPinsDir('C',INPUT,3,4,6,7);
 	setPinsVal('C',HIGH,3,4,6,7);
-	//encInit(0);
-	//encInit(1);
+	encInit(0);
+	encInit(1);
+	setPinsDir('D',INPUT,7,1,2,3,4,5,6,7);
+	setPinsVal('D',HIGH,7,1,2,3,4,5,6,7);
+	//setPinsVAL('D',INPUT,6,2,3,4,5,6,7);
 	//ArmPose pose = getPoseFromXY(7.5*25.4,6*25.4);
 	//setAngles(pose.thetaZero,pose.thetaOne);
 	//printf("%i,%i\n",pose.thetaZero,pose.thetaOne);
@@ -48,67 +51,37 @@ void setup() {
 		_delay_ms(1000);
 	}*/
 	//_delay_ms(3000);
+	setAngles(90,0);
+	//_delay_ms(1000);
+	//resetEncCount(0);
+	//resetEncCount(1);
+	//setAngles(89,0);
+
+
+	//setMotorPwr(0,0);
+	//setMotorPwr(1,0);
 }
 
 void loop() {
-	//BYTE val = getPinsVal('D',4,4,5,6,7);
-	//printf("%x\t",PINC);
-	/*if(((PINC>>4)&0x01)==0x00)
+	/*if((getPinsVal('D',1,3)==0x00))
 	{
-		ArmPose pose = getPoseFromXY(8*25.4,4*25.4);
-		setAngles(pose.thetaZero,pose.thetaOne);*/
-		//printf("Btn press");
-		//_delay_ms(50);
-		//setAngles(0,0);
-		/*for(int i = 0;i<4;i++)
-		{
-			goToXYWithLine(targets[i].x,targets[i].y);
-			//while(atAngle() != 0x1) {_delay_ms(20);} //wait till at angle
-			printf("Done\n");
-			//_delay_ms(1000);
-		}
-		printf("Seq Done\n");
-		_delay_ms(1000);*/
-
-		//printf("0\n");
-	//}
-	/*else if(((PINC>>5)&0x1)==0x00)
-	{
-		ArmPose pose = getPoseFromXY(8*25.4,0*25.4);
-		setAngles(pose.thetaZero,pose.thetaOne);
-		//setAngles(30,0);
-		//printf("3\n");
-
-	}*/
-	/*else if(((PINC>>6)&0x1)==0x00)
-	{
-		ArmPose pose = getPoseFromXY(10*25.4,0*25.4);
-		setAngles(pose.thetaZero,pose.thetaOne);
-		//setAngles(60,0);
-		//printf("6\n");
+		//Btn 3 pressed
+		setAngles(89,0);
+		printf("btn 3\n");
 	}
-	else if(((PINC>>7)&0x1)==0x00)
+	if((getPinsVal('D',1,2)==0x00))
 	{
-		ArmPose pose = getPoseFromXY(10*25.4,4*25.4);
-		setAngles(pose.thetaZero,pose.thetaOne);
-		//setAngles(90,0);
-		//printf("9\n");
+		//Btn 2 pressed
+		setAngles(1,0);
+		printf("btn 2\n");
+	}
+	if((getPinsVal('D',1,1)==0x00))
+	{
+		//Btn 1 pressed
+		resetEncCount(0);
+		resetEncCount(1);
+		printf("btn 1\n");
 	}*/
-	//_delay_ms(25);
-	/*long time = getGlobalTime();
-	unsigned int val = getADC(M0_POT_PIN);
-	unsigned int valTwo = getADC(M1_POT_PIN);
-	int angleOne = potAngle(M0_POT_PIN);
-	int angleTwo = potAngle(M1_POT_PIN);
-	int mVOne = potVolts(M0_POT_PIN);
-	int mVTwo = potVolts(M1_POT_PIN);
-	printf("%f,%i,%i,%i,%i,%i,%i\n",(float)time,val,valTwo,angleOne,angleTwo,mVOne,mVTwo);
-	setMotorPwr(0,30*(4096/100));
-	setMotorPwr(1,30*(4096/100));
-	_delay_ms(75);*/
-	//signed int a = getAccel(0);
-		//signed int b = getAccel(1);
-		//signed int c = getAccel(2);
-	//	printf("%i,%i,%i\n",a,b,c);
+	_delay_ms(25);
 }
 

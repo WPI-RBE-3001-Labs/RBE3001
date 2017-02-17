@@ -61,8 +61,8 @@
 char accelStarted = 0x00;
 
 void startAccel() {
-	setPinsDir('C',OUTPUT,1,5); //set ss as output
-	setPinsVal('C',HIGH,1,5); //ss disable
+	setPinsDir('C',OUTPUT,1,0); //set ss as output
+	setPinsVal('C',HIGH,1,0); //ss disable
 	initSPI();
 	accelStarted = 0x01;
 	printf("Start accel\n");
@@ -95,11 +95,11 @@ signed int getAccel(int axis) {
 	break;
 	}
 	int16_t result;
-	setPinsVal('C',LOW,1,5); //ss enable
+	setPinsVal('C',LOW,1,0); //ss enable
 	spiTransceive(0b110);
 	result = (spiTransceive(axis<<6)&0x0F)<<8;
 	result |= spiTransceive(0x00);
-	setPinsVal('C',HIGH,1,5); //ss disable
+	setPinsVal('C',HIGH,1,0); //ss disable
 	return result;
 }
 
