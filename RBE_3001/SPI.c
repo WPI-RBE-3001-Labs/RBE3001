@@ -6,6 +6,9 @@
  */
 #include <RBELib/RBELib.h>
 
+
+
+char spiInit = 0x00;
 /**
  * @brief Initializes the SPI bus for communication with all of your
  * SPI devices.
@@ -15,17 +18,21 @@
  * of your SS lines!
  */
 void initSPI() {
-	//Setup SPI Pins
-	setPinsDir('B',OUTPUT,3,4,5,7);
-	setPinsDir('B',INPUT,1,6);
-	//Setup SPI
-	SPCR =  (0<<SPIE)| //Interrupt enable bit
-			(1<<SPE) | //SPI enable bit
-			(0<<DORD)| //1-LSB; 0-MSB
-			(1<<MSTR)| //1-master;0-slave
-			(0<<CPOL)| //clk polarity
-			(0<<CPHA)| //clk phase
-			(0<<SPR1)|(0<<SPR0); //div 4 prescaler pg 222
+	if(spiInit == 0x00)
+	{
+		//Setup SPI Pins
+		setPinsDir('B',OUTPUT,3,4,5,7);
+		setPinsDir('B',INPUT,1,6);
+		//Setup SPI
+		SPCR =  (0<<SPIE)| //Interrupt enable bit
+				(1<<SPE) | //SPI enable bit
+				(0<<DORD)| //1-LSB; 0-MSB
+				(1<<MSTR)| //1-master;0-slave
+				(0<<CPOL)| //clk polarity
+				(0<<CPHA)| //clk phase
+				(1<<SPR1)|(1<<SPR0); //div 4 prescaler pg 222
+		spiInit = 0x01;
+	}
 }
 
 /**
