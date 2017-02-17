@@ -6,6 +6,8 @@
  */
 #include <RBELib/RBELib.h>
 
+char adcStarted = 0x00;
+
 /**
  * @brief Initializes the ADC and make one channel active.
  * You can choose to use either interrupts or polling to read
@@ -17,13 +19,17 @@
  * using the channel parameter.
  */
 void initADC(int channel) {
-	//SETUP ADC
-	DIDR0 = 0xFF; //disable digital buffer for ADC pins
-	ADMUX   = (1<<REFS1)|(unsigned int)channel; //AVcc; Mux pin = channel single pole
-	ADCSRA  = (0<<ADATE)|(0<<ADIE); //Disable auto trigger and interrupt
-	ADCSRA |= (1<<ADPS0)|(1<<ADPS1)|(1<<ADPS2); //Set prescaler to 128 because it's only valid setting for setup
-	ADCSRB  = (1<<ADTS0)|(1<<ADTS1); //set trigger source to timer0 Comp A
-	ADCSRA |= (1<<ADEN)|(0<<ADSC); //Enable ADC and don't start conversion
+	if(adcStarted == 0x00)
+	{
+		//SETUP ADC
+		DIDR0 = 0xFF; //disable digital buffer for ADC pins
+		ADMUX   = (1<<REFS1)|(unsigned int)channel; //AVcc; Mux pin = channel single pole
+		ADCSRA  = (0<<ADATE)|(0<<ADIE); //Disable auto trigger and interrupt
+		ADCSRA |= (1<<ADPS0)|(1<<ADPS1)|(1<<ADPS2); //Set prescaler to 128 because it's only valid setting for setup
+		ADCSRB  = (1<<ADTS0)|(1<<ADTS1); //set trigger source to timer0 Comp A
+		ADCSRA |= (1<<ADEN)|(0<<ADSC); //Enable ADC and don't start conversion
+		adcStarted = 0x01;
+	}
 }
 
 /**
