@@ -30,7 +30,7 @@ void initSPI() {
 				(1<<MSTR)| //1-master;0-slave
 				(0<<CPOL)| //clk polarity
 				(0<<CPHA)| //clk phase
-				(1<<SPR1)|(1<<SPR0); //div 4 prescaler pg 222
+				(1<<SPR1)|(1<<SPR0); //div 64 prescaler pg 222
 		spiInit = 0x01;
 	}
 }

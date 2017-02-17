@@ -139,16 +139,16 @@ int getMotorCurrent(int mtr) { //return mA
 const float DEG_TO_RAD = 180/3.141592654;
 const float M0_GRAV_CONST = 0;
 const float M1_GRAV_CONST = 0;
-float lastErrorM0 = 0;
-float lastErrorM1 = 0;
-float sumErrorM0 = 0;
-float sumErrorM1 = 0;
-float M0_kp = 120;
-float M0_ki = 0;
-float M0_kd = 0;
-float M1_kp = 120;
-float M1_ki = 0;
-float M1_kd = 0;
+long lastErrorM0 = 0;
+long lastErrorM1 = 0;
+long sumErrorM0 = 0;
+long sumErrorM1 = 0;
+long M0_kp = 120;
+long M0_ki = 0;
+long M0_kd = 0;
+long M1_kp = 120;
+long M1_ki = 0;
+long M1_kd = 0;
 
 
 ISR(TIMER2_COMPA_vect) {
@@ -160,18 +160,18 @@ ISR(TIMER2_COMPA_vect) {
 	printf("d: %f\n",M0_kd);*/
 	int angleM0 = potAngle(M0_POT_PIN);
 	int angleM1 = potAngle(M1_POT_PIN);
-	float M0_ff = sin(angleM0*DEG_TO_RAD)*M0_GRAV_CONST;
-	float M1_ff = sin((angleM0+angleM1)*DEG_TO_RAD)*M1_GRAV_CONST;
-	float errorM0 = m0_target-angleM0;
-	float errorM1 = m1_target-angleM1;
-	float diffErrorM0 = lastErrorM0-errorM0;
-	float diffErrorM1 = lastErrorM1-errorM1;
+	long M0_ff = 0;//sin(angleM0*DEG_TO_RAD)*M0_GRAV_CONST;
+	long M1_ff = 0;//sin((angleM0+angleM1)*DEG_TO_RAD)*M1_GRAV_CONST;
+	long errorM0 = m0_target-angleM0;
+	long errorM1 = m1_target-angleM1;
+	long diffErrorM0 = lastErrorM0-errorM0;
+	long diffErrorM1 = lastErrorM1-errorM1;
 	lastErrorM0 = errorM0;
 	lastErrorM1 = errorM1;
 	sumErrorM0 += errorM0;
 	sumErrorM1 += errorM1;
-	float pidOutM0 = (M0_kp*errorM0)+(M0_ki*sumErrorM0)+(M0_kd*diffErrorM0)+M0_ff;
-	float pidOutM1 = (M1_kp*errorM1)+(M1_ki*sumErrorM1)+(M1_kd*diffErrorM1)+M1_ff;
+	long pidOutM0 = (M0_kp*errorM0)+(M0_ki*sumErrorM0)+(M0_kd*diffErrorM0)+M0_ff;
+	long pidOutM1 = (M1_kp*errorM1)+(M1_ki*sumErrorM1)+(M1_kd*diffErrorM1)+M1_ff;
 	pidOutM0 = constrain(pidOutM0,-4095,4095);
 	pidOutM1 = constrain(pidOutM1,-4095,4095);
 	setMotorPwr(0,pidOutM0);

@@ -106,12 +106,9 @@ void loop() {
 	setMotorPwr(0,30*(4096/100));
 	setMotorPwr(1,30*(4096/100));
 	_delay_ms(75);*/
-	signed int a = getAccel(0);
-	signed int b = getAccel(1);
-	signed int c = getAccel(2);
-	printf("N\n");
-	_delay_ms(10);
-	printf("%i,%i,%i\n",a,b,c);
-	_delay_ms(10);
+	//signed int a = getAccel(0);
+		//signed int b = getAccel(1);
+		//signed int c = getAccel(2);
+	//	printf("%i,%i,%i\n",a,b,c);
 }
 
