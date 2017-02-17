@@ -29,7 +29,7 @@ void setup() {
 	initADC(4);
 	initGlobalTimer();
 	initMotorControl();
-	setAngles(30,-30);
+	//setAngles(30,-30);
 	setPinsDir('C',INPUT,3,4,6,7);
 	setPinsVal('C',HIGH,3,4,6,7);
 	//encInit(0);
@@ -106,8 +106,12 @@ void loop() {
 	setMotorPwr(0,30*(4096/100));
 	setMotorPwr(1,30*(4096/100));
 	_delay_ms(75);*/
+	signed int a = getAccel(0);
+	signed int b = getAccel(1);
+	signed int c = getAccel(2);
 	printf("N\n");
-	printf("%f,%f,%f\n",(float)getAccel(0),(float)getAccel(1),(float)getAccel(2));
-	_delay_ms(100);
+	_delay_ms(10);
+	printf("%i,%i,%i\n",a,b,c);
+	_delay_ms(10);
 }
 
