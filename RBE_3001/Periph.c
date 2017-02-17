@@ -80,12 +80,26 @@ signed int getAccel(int axis) {
 	{
 		startAccel();
 	}
+	switch(axis)
+	{
+	case 0:
+	axis = 0x00;
+	break;
+	case 1:
+	axis = 0x01;
+	break;
+	case 2:
+	axis = 0x02;
+	break;
+	default:
+	break;
+	}
 	int16_t result;
-	setPinsDir('C',LOW,1,5); //ss enable
+	setPinsVal('C',LOW,1,5); //ss enable
 	spiTransceive(0b110);
 	result = (spiTransceive(axis<<6)&0x0F)<<8;
 	result |= spiTransceive(0x00);
-	setPinsDir('C',HIGH,1,5); //ss disable
+	setPinsVal('C',HIGH,1,5); //ss disable
 	return result;
 }
 
