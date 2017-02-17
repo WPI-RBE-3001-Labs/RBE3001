@@ -58,6 +58,16 @@
 #define LOAD_CNTR   0xE
 #define LOAD_OTR    0xE
 
+char accelStarted = 0x00;
+
+void startAccel() {
+	setPinsDir('C',OUTPUT,1,5); //set ss as output
+	setPinsVal('C',HIGH,1,5); //ss disable
+	initSPI();
+	accelStarted = 0x01;
+	printf("Start accel\n");
+}
+
 /*
  * @brief Find the acceleration in the given axis (X, Y, Z).
  * @param  axis The axis that you want to get the measurement of.
@@ -66,7 +76,17 @@
  * @todo Create a function that is able to find the acceleration of a given axis.
  */
 signed int getAccel(int axis) {
-	return -1;
+	if(accelStarted == 0x00)
+	{
+		startAccel();
+	}
+	int16_t result;
+	setPinsDir('C',LOW,1,5); //ss enable
+	spiTransceive(0b110);
+	result = (spiTransceive(axis<<6)&0x0F)<<8;
+	result |= spiTransceive(0x00);
+	setPinsDir('C',HIGH,1,5); //ss disable
+	return result;
 }
 
 /**
